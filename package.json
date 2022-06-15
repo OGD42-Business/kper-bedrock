@@ -1,0 +1,107 @@
+{
+  "name": "bedrock",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "predev": "yarn run generate",
+    "dev": "next dev",
+    "prebuild": "yarn run generate",
+    "build": "next build",
+    "start": "next start",
+    "start:ci": "INSECURE_AUTH=true yarn run start",
+    "eslint": "eslint --cache --cache-location=node_modules/.cache/.eslintcache --fix",
+    "lint": "yarn run eslint . --ext .js,.jsx,.ts,.tsx",
+    "format": "prettier '**/*' --ignore-unknown --write",
+    "generate": "yarn run generate:prisma && yarn run generate:nexus && yarn run generate:graphql-codegen",
+    "generate:prisma": "prisma generate",
+    "generate:nexus": "cross-env GENERATE=true cross-env DOTENV_CONFIG_PATH=.env.example ts-node --require dotenv/config --transpile-only -P nexus.tsconfig.json src/server/graphql/schema.ts",
+    "generate:graphql-codegen": "graphql-codegen",
+    "prisma:migrate": "yarn prisma migrate dev",
+    "prisma:studio": "prisma studio",
+    "test": "jest",
+    "typecheck": "concurrently --raw yarn:typecheck:*",
+    "typecheck:app": "tsc --noEmit",
+    "typecheck:cypress": "tsc --noEmit -p cypress/tsconfig.json",
+    "cypress:open": "cypress open",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "@prisma/client": "^3.9.2",
+    "@urql/exchange-graphcache": "^4.3.6",
+    "apollo-server-micro": "^3.6.3",
+    "cookie-session": "^2.0.0",
+    "dotenv": "^16.0.0",
+    "graphql": "^15.8.0",
+    "graphql-tag": "^2.12.6",
+    "micro": "^9.3.4",
+    "next": "^12.1.0",
+    "next-connect": "^0.12.2",
+    "nexus": "^1.2.0",
+    "passport": "^0.5.2",
+    "passport-magic-login": "1.0.9",
+    "postmark": "^3.0.1",
+    "raw-body": "^2.5.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-hot-toast": "^2.2.0",
+    "slug": "^5.2.0",
+    "stripe": "^8.205.0",
+    "urql": "^2.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.5",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-typescript": "^7.16.7",
+    "@graphql-codegen/cli": "2.6.2",
+    "@graphql-codegen/near-operation-file-preset": "^2.2.6",
+    "@graphql-codegen/typescript": "^2.4.5",
+    "@graphql-codegen/typescript-operations": "2.3.2",
+    "@graphql-codegen/typescript-urql": "^3.5.3",
+    "@graphql-codegen/typescript-urql-graphcache": "^2.2.6",
+    "@netlify/plugin-nextjs": "^4.2.7",
+    "@stripe/stripe-js": "^1.23.0",
+    "@types/common-tags": "^1.8.1",
+    "@types/cookie-session": "^2.0.44",
+    "@types/jest": "^27.4.0",
+    "@types/node": "^17.0.21",
+    "@types/passport": "^1.0.7",
+    "@types/react": "^17.0.39",
+    "@types/slug": "^5.0.3",
+    "@typescript-eslint/eslint-plugin": "^5.13.0",
+    "@typescript-eslint/parser": "^5.13.0",
+    "common-tags": "1.8.2",
+    "concurrently": "^7.0.0",
+    "cross-env": "^7.0.3",
+    "cypress": "^9.5.1",
+    "eslint": "^8.10.0",
+    "eslint-config-prettier": "^8.4.0",
+    "eslint-plugin-cypress": "^2.12.1",
+    "eslint-plugin-import": "^2.25.4",
+    "husky": "^7.0.4",
+    "jest": "^27.5.1",
+    "lint-staged": ">=12.3.4",
+    "next-prisma-plugin-webpack5": "^0.0.0-dripip",
+    "prettier": "^2.5.1",
+    "prisma": "^3.9.2",
+    "typescript": "^4.6.2"
+  },
+  "jest": {
+    "setupFiles": [
+      "dotenv/config"
+    ],
+    "setupFilesAfterEnv": [
+      "./src/test/jest-setup.ts"
+    ],
+    "transform": {
+      "\\.tsx?$": [
+        "babel-jest",
+        {
+          "configFile": "./.babelrc.jest.js"
+        }
+      ]
+    }
+  },
+  "prisma": {
+    "schema": "src/server/db/schema.prisma"
+  }
+}

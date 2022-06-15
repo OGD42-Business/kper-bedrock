@@ -1,0 +1,21 @@
+query GetCurrentUserWithProjects($projectsFirst: Int!, $projectsAfter: String) {
+  currentUser {
+    id
+    name
+    email
+    projects(first: $projectsFirst, after: $projectsAfter) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      edges {
+        node {
+          id
+          name
+          slug
+          paidPlan
+        }
+      }
+    }
+  }
+}

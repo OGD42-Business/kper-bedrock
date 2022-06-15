@@ -1,0 +1,26 @@
+query GetProjectWithUsers(
+  $id: String
+  $slug: String
+  $usersFirst: Int!
+  $usersAfter: String
+) {
+  project(id: $id, slug: $slug) {
+    id
+    name
+    slug
+    paidPlan
+    users(first: $usersFirst, after: $usersAfter) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      edges {
+        node {
+          id
+          name
+          email
+        }
+      }
+    }
+  }
+}
